@@ -1,0 +1,79 @@
+buildscript {
+    ext.kotlin_version = "1.4.31"
+}
+
+plugins {
+    id "idea"
+    id "java"
+    id "org.jetbrains.kotlin.jvm" version "$kotlin_version"
+    id "org.jetbrains.kotlin.kapt" version "$kotlin_version"
+    id "com.adarshr.test-logger" version "2.0.0"
+    id "org.jetbrains.dokka" version "0.10.1"
+}
+
+group "com.totec.trading"
+version "0.1"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation "com.totec.trading:totec-core:0.1"
+    implementation "com.totec.trading:totec-rest:0.1"
+    implementation "com.totec:totec-parser:0.1"
+
+    api "com.dslplatform:dsl-json-java8:1.9.5"
+    api "com.google.dagger:dagger:2.27"
+    api "commons-io:commons-io:2.7"
+    api "net.openhft:chronicle-queue:5.19.4"
+    api "org.apache.httpcomponents:httpasyncclient:4.1.3"
+    api "org.eclipse.jetty.websocket:websocket-client:9.4.33.v20201020"
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api "org.openjdk.jmh:jmh-core:1.21"
+    implementation "javax.json.bind:javax.json.bind-api:1.0"
+
+    kapt "com.dslplatform:dsl-json-java8:1.9.5"
+    kapt "org.openjdk.jmh:jmh-generator-annprocess:1.21"
+    kapt "com.google.dagger:dagger-compiler:2.27"
+    kaptTest "org.openjdk.jmh:jmh-generator-annprocess:1.21"
+
+    testImplementation "org.openjdk.jmh:jmh-core:1.21"
+    testImplementation "io.mockk:mockk:1.9.1"
+    testImplementation "io.kotest:kotest-runner-junit5-jvm:4.2.0.RC1"
+}
+
+testlogger {
+    theme 'standard'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+kapt {
+    includeCompileClasspath = false
+}
+
+dokka {
+    outputFormat = 'html'
+    configuration {
+        moduleName = "totec-live"
+        perPackageOption {
+            prefix = "com.totec.trading.live.benchmark"
+            suppress = true
+        }
+    }
+}

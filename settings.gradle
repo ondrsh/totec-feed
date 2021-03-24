@@ -1,0 +1,3 @@
+includeBuild "../totec-core"
+includeBuild "../totec-parser"
+includeBuild "../totec-rest"
